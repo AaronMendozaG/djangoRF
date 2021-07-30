@@ -43,6 +43,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    #SE AGREGA LA DEPENDENCIAS
+    'rest_framework',
+    #My APPS
     'vet',
 ]
 
