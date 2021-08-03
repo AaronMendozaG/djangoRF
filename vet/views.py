@@ -156,5 +156,14 @@ class PetOwnerListAPIView(generics.ListAPIView):
 class PetListAPIView(generics.ListAPIView):
     queryset = Pet.objects.all()
     serializer_class = PetListSerializer
-    
+
+#RETRIEVE
+
+class PetOwnerRetrieveAPIView(generics.RetrieveAPIView):
+    queryset = PetOwner.objects.all()
+    serializer_class = PetOwnerSerializer
+
+class PetRetrieveAPIView(generics.RetrieveAPIView):
+    queryset = Pet.objects.all()
+    serializer_class = PetSerializer
 
