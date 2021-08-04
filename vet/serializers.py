@@ -1,6 +1,6 @@
 from django.db.models import fields
 from rest_framework import serializers
-from .models import PetOwner,Pet
+from .models import PetOwner,Pet, PetDate
 
 #VALIDACIONES DE DATOS DE ENTRADA Y SALIDA, NORMALIZACION DE DATOS
 #PERMITE DEFINIR KEYS Y CONSTRAINTS
@@ -84,16 +84,43 @@ from .models import PetOwner,Pet
 
 #MODEL SERIALIZERS
 
-class PetOwnerListSerializer(serializers.ModelSerializer):
+class PetOwnerListModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = PetOwner
         fields = ["id","first_name", "last_name"]
-class PetOwnerSerializer(serializers.ModelSerializer):
+class PetOwnerModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = PetOwner
-        fields = ["id","first_name", "last_name", "address", "phone"]
+        fields = ["id","first_name", "last_name", "address", "email","phone"]
 
-class PetListSerializer(serializers.ModelSerializer):
+class PetListModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Pet
+        fields = ["id","name","type"]
+class PetModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Pet
         fields = ["id","name","type",'owner']
+
+#PET DATES
+
+class PetDateListModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PetDate
+        fields = ["id","datetime","type"]
+
+class PetDateModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PetDate
+        fields = ["id","datetime","type","pet"]
+
+class PetDateRetrieveModelSerializer(serializers.ModelSerializer):
+    pet = PetModelSerializer()
+    class Meta:
+        model = PetDate
+        fields = ["id","datetime","type","pet"]
+
+class PetDateUpdateModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PetDate
+        fields = ["id","datetime","type"]

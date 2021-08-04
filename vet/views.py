@@ -6,9 +6,17 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 #SERIALIZERS
 #from .serializers import PetOwnerSerializer, PetSerializer, PetOwnerUpdateSerializer,PetUpdateSerializer
-from .serializers import PetOwnerListSerializer,PetListSerializer,PetOwnerSerializer
+from .serializers import (PetOwnerListModelSerializer,
+                            PetListModelSerializer,
+                            PetOwnerModelSerializer,
+                            PetModelSerializer,
+                            PetDateListModelSerializer,
+                            PetDateModelSerializer,
+                            PetDateUpdateModelSerializer,
+                            PetDateRetrieveModelSerializer,
+                        )
 #MODELS
-from .models import PetOwner, Pet
+from .models import PetOwner, Pet, PetDate
 
 
 
@@ -168,14 +176,99 @@ from .models import PetOwner, Pet
 
 #RETRIEVE
 
-class PetOwnerRetrieveAPIView(generics.RetrieveAPIView):
+# class PetOwnerRetrieveAPIView(generics.RetrieveAPIView):
+#     queryset = PetOwner.objects.all()
+#     serializer_class = PetOwnerModelSerializer
+
+# class PetRetrieveAPIView(generics.RetrieveAPIView):
+#     queryset = Pet.objects.all()
+#     serializer_class = PetListModelSerializer
+
+
+#LIST-CREATE
+
+class PetOwnerListCreateAPIView(generics.ListCreateAPIView):
     queryset = PetOwner.objects.all()
-    serializer_class = PetOwnerSerializer
+    serializer_class = PetOwnerListModelSerializer
 
-class PetRetrieveAPIView(generics.RetrieveAPIView):
+    def get_queryset(self):
+        #EL FILTRO SE HACE OPCIONAL
+        first_name_filter = self.request.GET.get("first_name")
+        filters = {}
+        if first_name_filter:
+            filters["first_name__icontains"] = first_name_filter
+        return self.queryset.filter(**filters)
+    def get_serializer_class(self):
+        serializer_class = self.serializer_class
+        if self.request.method == "POST":
+            serializer_class = PetOwnerModelSerializer
+        return serializer_class
+
+
+
+class PetListCreateAPIView(generics.ListCreateAPIView):
     queryset = Pet.objects.all()
-    serializer_class = PetListSerializer
+    serializer_class = PetListModelSerializer
+
+    def get_queryset(self):
+        #EL FILTRO SE HACE OPCIONAL
+        name_filter = self.request.GET.get("name")
+        filters = {}
+        if name_filter:
+            filters["name__icontains"] = name_filter
+        return self.queryset.filter(**filters)
+    def get_serializer_class(self):
+        serializer_class = self.serializer_class
+        if self.request.method == "POST":
+            serializer_class = PetModelSerializer
+        return serializer_class
+
+#CLASES SISMPLES (ListAPIView,Create,Retieve,Update,Destoy)
+#RETRIEVE-UPDATE-DESTROY
+
+class PetOwnersRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+
+    queryset = PetOwner.objects.all()
+    serializer_class = PetOwnerModelSerializer
+
+class PetRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+
+    queryset = Pet.objects.all()
+    serializer_class = PetModelSerializer
 
 
+#PETS DATES
 
+#LIST-CREATE
 
+class PetsDatesListCreateAPIView(generics.ListCreateAPIView):
+    queryset = PetDate.objects.all()
+    serializer_class = PetDateListModelSerializer
+
+    def get_queryset(self):
+        #EL FILTRO SE HACE OPCIONAL
+        name_filter = self.request.GET.get("name")
+        owner_filter = self.request.GET.get("owner")
+        filters = {}
+        if name_filter:
+            filters["pet__name"] = name_filter
+        elif owner_filter:
+            filters["pet__owner"] = owner_filter
+        return self.queryset.filter(**filters)
+
+    def get_serializer_class(self):
+        serializer_class = self.serializer_class
+        if self.request.method == "POST":
+            serializer_class = PetDateModelSerializer
+        return serializer_class
+
+class PetsDatesRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+
+    queryset = PetDate.objects.all()
+    serializer_class = PetDateRetrieveModelSerializer
+
+    def get_serializer_class(self):
+        serializer_class = self.serializer_class
+        if self.request.method == "PUT" and "PATCH":
+            serializer_class = PetDateUpdateModelSerializer
+        return serializer_class
