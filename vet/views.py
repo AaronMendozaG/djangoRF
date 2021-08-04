@@ -5,7 +5,8 @@ from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 #SERIALIZERS
-from .serializers import PetOwnerListSerializer,PetListSerializer,PetOwnerSerializer, PetSerializer, PetOwnerUpdateSerializer,PetUpdateSerializer
+#from .serializers import PetOwnerSerializer, PetSerializer, PetOwnerUpdateSerializer,PetUpdateSerializer
+from .serializers import PetOwnerListSerializer,PetListSerializer,PetOwnerSerializer
 #MODELS
 from .models import PetOwner, Pet
 
@@ -149,13 +150,21 @@ from .models import PetOwner, Pet
 
 
 #LISTADO
-class PetOwnerListAPIView(generics.ListAPIView):
-    queryset = PetOwner.objects.all()
-    serializer_class = PetOwnerListSerializer
+# class PetOwnerListAPIView(generics.ListAPIView):
+#     queryset = PetOwner.objects.all()
+#     serializer_class = PetOwnerListSerializer
 
-class PetListAPIView(generics.ListAPIView):
-    queryset = Pet.objects.all()
-    serializer_class = PetListSerializer
+#     def get_queryset(self):
+#         #EL FILTRO SE HACE OPCIONAL
+#         first_name_filter = self.request.GET.get("first_name")
+#         filters = {}
+#         if first_name_filter:
+#             filters["first_name__icontains"] = first_name_filter
+#         return self.queryset.filter(**filters)
+
+# class PetListAPIView(generics.ListAPIView):
+#     queryset = Pet.objects.all()
+#     serializer_class = PetListSerializer
 
 #RETRIEVE
 
@@ -165,5 +174,8 @@ class PetOwnerRetrieveAPIView(generics.RetrieveAPIView):
 
 class PetRetrieveAPIView(generics.RetrieveAPIView):
     queryset = Pet.objects.all()
-    serializer_class = PetSerializer
+    serializer_class = PetListSerializer
+
+
+
 

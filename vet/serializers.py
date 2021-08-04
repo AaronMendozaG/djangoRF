@@ -4,44 +4,37 @@ from .models import PetOwner,Pet
 
 #VALIDACIONES DE DATOS DE ENTRADA Y SALIDA, NORMALIZACION DE DATOS
 #PERMITE DEFINIR KEYS Y CONSTRAINTS
-class PetOwnerSerializer(serializers.Serializer):
-    id = serializers.ReadOnlyField()
-    first_name = serializers.CharField()
-    last_name = serializers.CharField()
-    address = serializers.CharField()
-    email = serializers.EmailField()
-    phone =  serializers.CharField()
+# class PetOwnerSerializer(serializers.Serializer):
+#     id = serializers.ReadOnlyField()
+#     first_name = serializers.CharField()
+#     last_name = serializers.CharField()
+#     address = serializers.CharField()
+#     email = serializers.EmailField()
+#     phone =  serializers.CharField()
 
-    #se sobrescribe el metodo a ocupar en este caso se quiere crear una nueva instancia
-    def create(self, validate_date):
-        return PetOwner.objects.create(**validate_date)
-
-
-class PetSerializer(serializers.Serializer):
-    id = serializers.ReadOnlyField()
-    name = serializers.CharField()
-    type = serializers.ChoiceField(choices=Pet.PET_TYPES)
-    owner = serializers.PrimaryKeyRelatedField(queryset=PetOwner.objects.all())
-
-    def create(self, validate_date):
-        return Pet.objects.create(**validate_date)
+#     #se sobrescribe el metodo a ocupar en este caso se quiere crear una nueva instancia
+#     def create(self, validate_date):
+#         return PetOwner.objects.create(**validate_date)
 
 
-class PetOwnerListSerializer(serializers.ModelSerializer):
+# class PetSerializer(serializers.Serializer):
+#     id = serializers.ReadOnlyField()
+#     name = serializers.CharField()
+#     type = serializers.ChoiceField(choices=Pet.PET_TYPES)
+#     owner = serializers.PrimaryKeyRelatedField(queryset=PetOwner.objects.all())
 
-    class Meta:
-        model = PetOwner
-        fields = ["id","first_name", "last_name"]
+#     def create(self, validate_date):
+#         return Pet.objects.create(**validate_date)
+
+
+
 
 # class PetOwnerListSerializer(serializers.Serializer):
 #     id = serializers.IntegerField()
 #     first_name = serializers.CharField(max_length=255)
 #     last_name = serializers.CharField(max_length=255)
 
-class PetListSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Pet
-        fields = ["id","name","type",'owner']
+
 # class PetOwnerContactSerializer(serializers.Serializer):
 #     id = serializers.IntegerField()
 #     first_name = serializers.CharField(max_length=255)
@@ -56,30 +49,51 @@ class PetListSerializer(serializers.ModelSerializer):
 
 #SERIALIZERS PARA UPDATE 
 
-class PetOwnerUpdateSerializer(serializers.Serializer):
-    first_name = serializers.CharField(required=False)
-    last_name = serializers.CharField(required=False)
-    address = serializers.CharField(required=False)
-    phone =  serializers.CharField(required=False)
+# class PetOwnerUpdateSerializer(serializers.Serializer):
+#     first_name = serializers.CharField(required=False)
+#     last_name = serializers.CharField(required=False)
+#     address = serializers.CharField(required=False)
+#     phone =  serializers.CharField(required=False)
 
-    #SE SOBRESCRIBE EL METODO UPDATE DEL SERIALIZER
-    def update(self, instance, validate_data):
-                                                #SI NO HAY CAMBIO SE DEJA LA INSTANCIA
-        instance.first_name = validate_data.get("first_name", instance.first_name)
-        instance.last_name = validate_data.get("last_name", instance.last_name)
-        instance.address = validate_data.get("address", instance.address)
-        instance.phone = validate_data.get("phone",instance.phone)
-        instance.save()
-        return instance
+#     #SE SOBRESCRIBE EL METODO UPDATE DEL SERIALIZER
+#     def update(self, instance, validate_data):
+#                                                 #SI NO HAY CAMBIO SE DEJA LA INSTANCIA
+#         instance.first_name = validate_data.get("first_name", instance.first_name)
+#         instance.last_name = validate_data.get("last_name", instance.last_name)
+#         instance.address = validate_data.get("address", instance.address)
+#         instance.phone = validate_data.get("phone",instance.phone)
+#         instance.save()
+#         return instance
 
-class PetUpdateSerializer(serializers.Serializer):
-    name = serializers.CharField(required=False)
-    type = serializers.CharField(required=False)
-    owner_id = serializers.IntegerField(required=False) 
+# class PetUpdateSerializer(serializers.Serializer):
+#     name = serializers.CharField(required=False)
+#     type = serializers.CharField(required=False)
+#     owner_id = serializers.IntegerField(required=False) 
     
-    def update(self, instance, validated_data):
-        instance.name = validated_data.get("name", instance.name)
-        instance.type = validated_data.get("type",instance.type)
-        instance.owner_id = validated_data.get("owner_id",instance.owner_id)
-        instance.save()
-        return instance
+#     def update(self, instance, validated_data):
+#         instance.name = validated_data.get("name", instance.name)
+#         instance.type = validated_data.get("type",instance.type)
+#         instance.owner_id = validated_data.get("owner_id",instance.owner_id)
+#         instance.save()
+#         return instance
+
+
+
+
+
+
+#MODEL SERIALIZERS
+
+class PetOwnerListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PetOwner
+        fields = ["id","first_name", "last_name"]
+class PetOwnerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PetOwner
+        fields = ["id","first_name", "last_name", "address", "phone"]
+
+class PetListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Pet
+        fields = ["id","name","type",'owner']
