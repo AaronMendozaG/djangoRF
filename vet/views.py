@@ -204,7 +204,18 @@ class PetOwnerListCreateAPIView(generics.ListCreateAPIView):
             serializer_class = PetOwnerModelSerializer
         return serializer_class
 
+class PetOwnersDatesListCreateAPIView(generics.ListCreateAPIView):
 
+    queryset = PetDate.objects.all()
+    serializer_class = PetDateListModelSerializer
+
+    def get_queryset(self):
+        owner_id = self.kwargs["pk"]
+        filters = {}
+        if owner_id:
+            filters["pet__owner_id"] = owner_id
+
+        return self.queryset.filter(**filters)
 
 class PetListCreateAPIView(generics.ListCreateAPIView):
     queryset = Pet.objects.all()
@@ -270,5 +281,5 @@ class PetsDatesRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIVie
     def get_serializer_class(self):
         serializer_class = self.serializer_class
         if self.request.method == "PUT" and "PATCH":
-            serializer_class = PetDateUpdateModelSerializer
+            serializer_class = PetDateListModelSerializer
         return serializer_class

@@ -9,6 +9,7 @@ from .views import (PetOwnerListCreateAPIView,
                     PetRetrieveUpdateDestroyAPIView,
                     PetsDatesListCreateAPIView,
                     PetsDatesRetrieveUpdateDestroyAPIView,
+                    PetOwnersDatesListCreateAPIView,
                     )
 
 urlpatterns = [
@@ -19,6 +20,11 @@ urlpatterns = [
 
     path("owners/", PetOwnerListCreateAPIView.as_view(), name="owners_list-create"),
     path("owners/<int:pk>", PetOwnersRetrieveUpdateDestroyAPIView.as_view(), name="owner_retrive-update-destroy"),
+    path(
+        "owners/<int:pk>/dates",
+        PetOwnersDatesListCreateAPIView.as_view(),
+        name="owners_dates_list",
+    ),
     path("pets/", PetListCreateAPIView.as_view(), name="pets_list-create"),
     path("pets/<int:pk>", PetRetrieveUpdateDestroyAPIView.as_view(), name="pet_retrive"),
     path("dates/", PetsDatesListCreateAPIView.as_view(), name="petDate_list-create"),
