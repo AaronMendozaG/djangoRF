@@ -107,7 +107,8 @@ class PetModelSerializer(serializers.ModelSerializer):
 class PetDateListModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = PetDate
-        fields = ["id","datetime","type"]
+        fields = ["id","datetime","type","pet"]
+        depth = 2
 
 class PetDateModelSerializer(serializers.ModelSerializer):
     class Meta:

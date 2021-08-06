@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     #SE AGREGA LA DEPENDENCIAS
     'rest_framework',
-    'djanfo-filter',
+    'django_filters',
     #My APPS
     'vet',
 ]

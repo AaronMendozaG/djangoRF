@@ -1,9 +1,10 @@
 from django.shortcuts import render
-from rest_framework import serializers, status, generics
+from rest_framework import serializers, status, generics, filters
 from django.shortcuts import get_object_or_404
 #VISTAS DE DJANGO
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from django_filters.rest_framework import DjangoFilterBackend
 #SERIALIZERS
 #from .serializers import PetOwnerSerializer, PetSerializer, PetOwnerUpdateSerializer,PetUpdateSerializer
 from .serializers import (PetOwnerListModelSerializer,
@@ -190,14 +191,20 @@ from .models import PetOwner, Pet, PetDate
 class PetOwnerListCreateAPIView(generics.ListCreateAPIView):
     queryset = PetOwner.objects.all()
     serializer_class = PetOwnerListModelSerializer
+    #BUSQUEDA ESPECIFICA
+    # filter_backends = [DjangoFilterBackend]
+    # filterset_fields = ["first_name"]
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
+    search_fields = ["first_name"]
+    ordering_fields = ["email"]
 
-    def get_queryset(self):
-        #EL FILTRO SE HACE OPCIONAL
-        first_name_filter = self.request.GET.get("first_name")
-        filters = {}
-        if first_name_filter:
-            filters["first_name__icontains"] = first_name_filter
-        return self.queryset.filter(**filters)
+    # def get_queryset(self):
+    #     #EL FILTRO SE HACE OPCIONAL
+    #     first_name_filter = self.request.GET.get("first_name")
+    #     filters = {}
+    #     if first_name_filter:
+    #         filters["first_name__icontains"] = first_name_filter
+    #     return self.queryset.filter(**filters)
     def get_serializer_class(self):
         serializer_class = self.serializer_class
         if self.request.method == "POST":
@@ -255,17 +262,20 @@ class PetRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
 class PetsDatesListCreateAPIView(generics.ListCreateAPIView):
     queryset = PetDate.objects.all()
     serializer_class = PetDateListModelSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ["pet__owner__first_name","pet__owner__last_name"]
+    depth = 2
 
-    def get_queryset(self):
-        #EL FILTRO SE HACE OPCIONAL
-        name_filter = self.request.GET.get("name")
-        owner_filter = self.request.GET.get("owner")
-        filters = {}
-        if name_filter:
-            filters["pet__name"] = name_filter
-        elif owner_filter:
-            filters["pet__owner"] = owner_filter
-        return self.queryset.filter(**filters)
+    # def get_queryset(self):
+    #     #EL FILTRO SE HACE OPCIONAL
+    #     name_filter = self.request.GET.get("name")
+    #     owner_filter = self.request.GET.get("owner")
+    #     filters = {}
+    #     if name_filter:
+    #         filters["pet__name"] = name_filter
+    #     elif owner_filter:
+    #         filters["pet__owner"] = owner_filter
+    #     return self.queryset.filter(**filters)
 
     def get_serializer_class(self):
         serializer_class = self.serializer_class
