@@ -32,6 +32,8 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 DEBUG = bool(os.getenv("DJANGO_DEBUG", True))
 
 ALLOWED_HOSTS = ["*"]
+#LISTA DE TODAS LA URLS QUE VAN A TENER ACCESO AL BACKEND
+CORS_ALLOWED_ORIGINS = ["http://localhost:"]
 
 
 # Application definition
@@ -46,6 +48,9 @@ INSTALLED_APPS = [
     #SE AGREGA LA DEPENDENCIAS
     'rest_framework',
     'django_filters',
+    'rest_framework.authtoken',
+    "corsheaders",
+
     #My APPS
     'vet',
 ]
@@ -58,7 +63,14 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    #aceptar origenes cruzados
+    'corsheaders.middleware.CorsMiddleware',
 ]
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES":(
+        "rest_framework.authentication.TokenAuthentication",
+    ),
+}
 
 ROOT_URLCONF = 'dogtor.urls'
 

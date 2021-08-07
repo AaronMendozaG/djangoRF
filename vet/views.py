@@ -5,6 +5,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.permissions import IsAuthenticated
 #SERIALIZERS
 #from .serializers import PetOwnerSerializer, PetSerializer, PetOwnerUpdateSerializer,PetUpdateSerializer
 from .serializers import (PetOwnerListModelSerializer,
@@ -197,6 +198,8 @@ class PetOwnerListCreateAPIView(generics.ListCreateAPIView):
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ["first_name"]
     ordering_fields = ["email"]
+    #auntenticacion
+    permission_classes = [IsAuthenticated]
 
     # def get_queryset(self):
     #     #EL FILTRO SE HACE OPCIONAL
