@@ -87,7 +87,7 @@ from .models import PetOwner,Pet, PetDate
 class PetOwnerListModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = PetOwner
-        fields = ["id","first_name", "last_name"]
+        fields = ["id","first_name", "last_name","email"]
 class PetOwnerModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = PetOwner

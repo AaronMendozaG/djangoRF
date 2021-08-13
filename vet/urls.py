@@ -11,6 +11,7 @@ from .views import (PetOwnerListCreateAPIView,
                     PetsDatesListCreateAPIView,
                     PetsDatesRetrieveUpdateDestroyAPIView,
                     PetOwnersDatesListCreateAPIView,
+                    PetOwnersPetsListCreateAPIView,
                     )
 
 urlpatterns = [
@@ -25,6 +26,11 @@ urlpatterns = [
         "owners/<int:pk>/dates",
         PetOwnersDatesListCreateAPIView.as_view(),
         name="owners_dates_list",
+    ),
+    path(
+        "owners/<int:pk>/pets",
+        PetOwnersPetsListCreateAPIView.as_view(),
+        name="owners_pets_list",
     ),
     path("pets/", PetListCreateAPIView.as_view(), name="pets_list-create"),
     path("pets/<int:pk>", PetRetrieveUpdateDestroyAPIView.as_view(), name="pet_retrive"),

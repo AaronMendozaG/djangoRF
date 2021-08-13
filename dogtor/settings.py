@@ -33,7 +33,8 @@ DEBUG = bool(os.getenv("DJANGO_DEBUG", True))
 
 ALLOWED_HOSTS = ["*"]
 #LISTA DE TODAS LA URLS QUE VAN A TENER ACCESO AL BACKEND
-CORS_ALLOWED_ORIGINS = ["http://localhost:"]
+CORS_ORIGIN_ALLOW_ALL = True
+# CORS_ALLOWED_ORIGINS = ["http://127.0.0.1:5500"]
 
 
 # Application definition

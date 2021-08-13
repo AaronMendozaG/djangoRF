@@ -199,7 +199,7 @@ class PetOwnerListCreateAPIView(generics.ListCreateAPIView):
     search_fields = ["first_name"]
     ordering_fields = ["email"]
     #auntenticacion
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
 
     # def get_queryset(self):
     #     #EL FILTRO SE HACE OPCIONAL
@@ -224,6 +224,19 @@ class PetOwnersDatesListCreateAPIView(generics.ListCreateAPIView):
         filters = {}
         if owner_id:
             filters["pet__owner_id"] = owner_id
+
+        return self.queryset.filter(**filters)
+
+class PetOwnersPetsListCreateAPIView(generics.ListCreateAPIView):
+
+    queryset = Pet.objects.all()
+    serializer_class = PetListModelSerializer
+
+    def get_queryset(self):
+        owner_id = self.kwargs["pk"]
+        filters = {}
+        if owner_id:
+            filters["owner_id"] = owner_id
 
         return self.queryset.filter(**filters)
 
