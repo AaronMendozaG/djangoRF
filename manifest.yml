@@ -1,0 +1,5 @@
+applications:
+- name: django-back-py2g
+  memory: 100MB
+  buildpack:  python_buildpack
+  random-route: true
